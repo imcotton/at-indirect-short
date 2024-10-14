@@ -1,0 +1,52 @@
+{
+  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
+  "name": "@indirect/short",
+  "version": "0.0.0",
+  "license": "AGPL-3.0-only",
+  "lock": false,
+  "imports": {
+    "@std/crypto": "jsr:@std/crypto@1",
+    "@std/encoding": "jsr:@std/encoding@1",
+    "@std/text": "jsr:@std/text@1",
+    "@std/uuid": "jsr:@std/uuid@1",
+    "@libs/qrcode": "jsr:@libs/qrcode@~2.0.0",
+    "hono": "jsr:@hono/hono@^4.6.8",
+    "valibot": "jsr:@valibot/valibot@~1.0.0-beta.3"
+  },
+  "tasks": {
+    "dev": "deno serve --port 3000 -N=esm.sh:443 -R=./db -W=./db --watch dev.ts"
+  },
+  "exports": {
+    "./deploy/deno": "./deploy/deno.ts",
+    "./helper": "./helper.ts",
+    "./app": "./app.tsx",
+    ".": "./mod.ts"
+  },
+  "publish": {
+    "include": [
+      "./**/*.ts",
+      "./**/*.tsx",
+      "./LICENSE.txt",
+      "./README.md",
+      "./deno.json"
+    ]
+  },
+  "test": {
+    "include": [
+      "./specs"
+    ]
+  },
+  "unstable": [
+    "kv"
+  ],
+  "compilerOptions": {
+    "jsx": "precompile",
+    "jsxImportSource": "hono/jsx",
+    "jsxImportSourceTypes": "hono/jsx",
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noUncheckedIndexedAccess": true
+  }
+}
