@@ -1,0 +1,40 @@
+name: Checking
+
+on: push
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+
+      - name: Setup Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Dry Run
+        run: deno publish --dry-run --allow-slow-types
+
+      - name: Tests
+        run: deno test --quiet --coverage --parallel ./specs
+
+      - name: Coverage
+        run: |-
+          deno coverage --exclude=./specs --lcov --output=cov.lcov
+          deno coverage --exclude=./specs
+
+      - name: Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: cov.lcov
+          use_oidc: true
+
