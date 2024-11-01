@@ -9,7 +9,7 @@
 
 
 
-## Interface <sup>(_curl_)</sup>
+## Interface <sup>_(curl)_</sup>
 
 - create `url`
 
