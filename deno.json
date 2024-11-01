@@ -11,6 +11,7 @@
     "@std/text": "jsr:@std/text@1",
     "@std/uuid": "jsr:@std/uuid@1",
     "@libs/qrcode": "jsr:@libs/qrcode@~2.0.0",
+    "esbuild-deno-loader": "jsr:@luca/esbuild-deno-loader@0.11.0",
     "fnv1a": "npm:@sindresorhus/fnv1a@3.1.0",
     "hono": "jsr:@hono/hono@^4.6.9",
     "valibot": "jsr:@valibot/valibot@~1.0.0-beta.3"
@@ -19,6 +20,7 @@
     "dev": "deno serve --port 3000 -N=esm.sh:443 -R=./db -W=./db --watch dev.ts"
   },
   "exports": {
+    "./deploy/unstable-cloudflare": "./deploy/unstable-cloudflare.ts",
     "./deploy/deno": "./deploy/deno.ts",
     "./helper": "./helper.ts",
     "./app": "./app.tsx",
