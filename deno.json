@@ -18,6 +18,7 @@
     "dev": "deno serve --port 3000 -N=esm.sh:443 -R=./db -W=./db --watch dev.ts"
   },
   "exports": {
+    "./deploy/unstable-cloudflare": "./deploy/unstable-cloudflare.ts",
     "./deploy/deno": "./deploy/deno.ts",
     "./helper": "./helper.ts",
     "./app": "./app.tsx",
