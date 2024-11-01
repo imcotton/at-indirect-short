@@ -1,9 +1,9 @@
 # jsr:@indirect/short
 
+> Web App for URL Shortener
+
 [![jsr](https://jsr.io/badges/@indirect/short)](https://jsr.io/@indirect/short)
 [![codecov](https://codecov.io/gh/imcotton/at-indirect-short/graph/badge.svg)](https://codecov.io/gh/imcotton/at-indirect-short)
-
-> Web App for URL Shortener
 
 
 
