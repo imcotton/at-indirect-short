@@ -1,14 +1,15 @@
 # jsr:@indirect/short
 
-> Web App for URL Shortener
-
 [![jsr](https://jsr.io/badges/@indirect/short)](https://jsr.io/@indirect/short)
 [![codecov](https://codecov.io/gh/imcotton/at-indirect-short/graph/badge.svg)](https://codecov.io/gh/imcotton/at-indirect-short)
 
+> Web App for URL Shortener
 
 
 
 
+
+<br><br><br><br><br>
 ## Interface <sup>_(curl)_</sup>
 
 - create `url`
@@ -34,6 +35,7 @@
 
 
 
+<br><br><br><br><br>
 ## Examples (on Deno Deploy)
 
 - no auth, one liner
@@ -87,6 +89,7 @@
 
 
 
+<br><br><br><br><br>
 ## License
 
 **AGPLv3**
