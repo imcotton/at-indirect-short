@@ -361,22 +361,22 @@ export function signingAuth (
 
     return createMiddleware(async function (ctx, next) {
 
-        const challenge = v.parse(
-            v.string('Sign On required'),
-            getCookie(ctx, 'challenge'),
-        );
-
         const data = await ctx.req.formData().then(v.parser(v.pipe(
             v.instance(FormData),
             v.transform(form => Object.fromEntries(form.entries())),
             v_signing_back,
             v.transform(function (origin) {
 
+                const challenge = v.parse(
+                    v.string('Sign On required'),
+                    getCookie(ctx, challenge_(origin.state)),
+                );
+
                 const pub = hex.decodeHex(origin.pub);
                 const signature = hex.decodeHex(origin.signature);
                 const query = new URLSearchParams(origin).toString();
 
-                return { ...origin, query, pub, signature };
+                return { ...origin, query, pub, signature, challenge };
 
             }),
         ), abort_early('invalid signing data')));
@@ -393,7 +393,7 @@ export function signingAuth (
 
         }
 
-        const ok = await verify({ ...signed, challenge });
+        const ok = await verify(signed);
 
         if (ok !== true) {
             throw new HTTPException(401, { message: 'verification failed' });

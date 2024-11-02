@@ -9,7 +9,7 @@ import { create_app } from '../app.tsx';
 import { gen_deno_kv } from '../adapter/deno-kv.ts';
 import { make_map_object } from '../adapter/map-object.ts';
 import { calc_fingerprint, gen_fnv1a_hash,
-    HMAC_SHA256, signingAuth, UUIDv4, webcrypto,
+    HMAC_SHA256, signingAuth, UUIDv4, webcrypto, challenge_,
 } from '../utils.ts';
 
 
@@ -203,13 +203,17 @@ Deno.test('/sign-on', async function () {
 
     ast.assert(location, 'has redirect url');
 
-    const query = new URLSearchParams(new URL(location).hash);
-
     const cookie = getCookies(new Headers(
         res.headers.getSetCookie().map(value => [ 'Cookie', value ]),
     ));
 
-    ast.assertStrictEquals(query.get('challenge'), cookie['challenge']);
+    const query = new URLSearchParams(new URL(location).hash.slice(1));
+    const state = query.get('state');
+    const challenge = query.get('challenge');
+
+    ast.assert(state);
+
+    ast.assertStrictEquals(challenge, cookie[challenge_(state)]);
 
 });
 
@@ -267,7 +271,7 @@ Deno.test('signingAuth', async function () {
 
     const tmp = new Headers();
 
-    setCookie(tmp, { name: 'challenge', value: challenge });
+    setCookie(tmp, { name: challenge_(state), value: challenge });
 
     const headers = Object.fromEntries(
         tmp.getSetCookie().map(value => [ 'Cookie', value ])

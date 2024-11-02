@@ -19,7 +19,7 @@ import { collection } from './assets.ts';
 import { noop, csp, cached, register, gen_fnv1a_hash,
     parser, v_create, v_optional_signing_back,
     UUIDv4, UUIDv5_URL, compose_signing_url, calc_fingerprint,
-    nmap, slugify, exception,
+    nmap, slugify, exception, challenge_,
 } from './utils.ts';
 
 
@@ -151,7 +151,7 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
             const state = UUIDv4();
             const challenge = UUIDv4();
 
-            setCookie(ctx, 'challenge', challenge, {
+            setCookie(ctx, challenge_(state), challenge, {
                 maxAge: 60 * 5, // 5 mins in second
                 path: '/',
                 secure: true,
