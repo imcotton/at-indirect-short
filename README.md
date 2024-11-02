@@ -39,14 +39,14 @@
 - no auth, one liner
 
     ```js
-    export { default } from 'jsr:@indirect/short'
+    export { default } from 'jsr:@indirect/short@1'
     ```
 
 - **signing auth** (via: https://sign-poc.js.org)
 
     ```js
-    import { make }        from 'jsr:@indirect/short/deploy/deno'
-    import { signingAuth } from 'jsr:@indirect/short/helper'
+    import { make }        from 'jsr:@indirect/short@1/deploy/deno'
+    import { signingAuth } from 'jsr:@indirect/short@1/helper'
 
     export default await make({
 
@@ -60,8 +60,8 @@
 - **basic auth** (by: https://hono.dev/docs/middleware/builtin/basic-auth)
 
     ```js
-    import { make }      from 'jsr:@indirect/short/deploy/deno'
-    import { basicAuth } from 'jsr:@indirect/short/helper'
+    import { make }      from 'jsr:@indirect/short@1/deploy/deno'
+    import { basicAuth } from 'jsr:@indirect/short@1/helper'
 
     export default await make({
 
@@ -73,8 +73,8 @@
 - **bearer auth** (by: https://hono.dev/docs/middleware/builtin/bearer-auth)
 
     ```js
-    import { make }       from 'jsr:@indirect/short/deploy/deno'
-    import { bearerAuth } from 'jsr:@indirect/short/helper'
+    import { make }       from 'jsr:@indirect/short@1/deploy/deno'
+    import { bearerAuth } from 'jsr:@indirect/short@1/helper'
 
     export default await make({
 
