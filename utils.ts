@@ -181,6 +181,22 @@ function wrap (open: string, close = open) {
 
 
 
+export const challenge_ = prefix('challenge_');
+
+function prefix (start: string) {
+
+    return function (end: string) {
+
+        return start.concat(end);
+
+    };
+
+}
+
+
+
+
+
 export function mins (n: number) {
 
     return 1000 * 60 * n;
