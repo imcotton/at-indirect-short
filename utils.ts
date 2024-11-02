@@ -21,6 +21,12 @@ export const { crypto: webcrypto } = globalThis;
 
 
 
+export type Predicate <T> = (_: T) => boolean;
+
+
+
+
+
 export const noop = createMiddleware(async function (_, next) {
 
     await next();
@@ -136,12 +142,6 @@ export function exception (err: unknown) {
     return new Response('unknown', { status });
 
 }
-
-
-
-
-
-export type Predicate <T> = (_: T) => boolean;
 
 
 
