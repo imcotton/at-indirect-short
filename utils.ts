@@ -588,9 +588,20 @@ export function csp <
     const self = wrap_by_quotes('self');
     const unsafe_inline = wrap_by_quotes('unsafe-inline');
 
+    const empty = Array.of<string>();
+
     return secureHeaders({
 
         referrerPolicy: 'origin, same-origin, strict-origin',
+
+        permissionsPolicy: {
+            usb: empty,
+            camera: empty,
+            gyroscope: empty,
+            microphone: empty,
+            geolocation: empty,
+            accelerometer: empty,
+        },
 
         contentSecurityPolicy: {
 
