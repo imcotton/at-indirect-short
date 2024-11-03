@@ -8,6 +8,7 @@ import { testClient } from 'hono/testing';
 import { create_app } from '../app.tsx';
 import { gen_deno_kv } from '../adapter/deno-kv.ts';
 import { make_map_object } from '../adapter/map-object.ts';
+import { duration_in_milliseconds, duration_in_seconds } from '../duration.ts';
 import { calc_fingerprint, gen_fnv1a_hash,
     HMAC_SHA256, signingAuth, UUIDv4, webcrypto, challenge_,
 } from '../utils.ts';
@@ -356,6 +357,26 @@ Deno.test('Adapter dispose', async function () {
     using db = await task();
 
     ast.assert(db);
+
+});
+
+Deno.test('Deno KV with TTL', async function () {
+
+    const id = 'foobar';
+    const link = 'https://example.com';
+
+    const init = gen_deno_kv(':memory:');
+    using db = await init();
+
+    ast.assert(await db.put(id, link, {
+        ttl: duration_in_milliseconds(80),
+    }));
+
+    ast.assertFalse(await db.put(id, link, {
+        ttl: duration_in_seconds(3),
+    }));
+
+    ast.assertStrictEquals(await db.get(id), link);
 
 });
 

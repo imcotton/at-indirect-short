@@ -1,8 +1,18 @@
+import type { Duration } from '../duration.ts';
+
+
+
+
+
 export interface Adapter {
 
     get (id: string): Promise<string | undefined>;
 
-    put (id: string, link: string): Promise<boolean>;
+    put (id: string, link: string, opts?: {
+
+            ttl?: Duration,
+
+    }): Promise<boolean>;
 
     [Symbol.dispose] (): void;
 
