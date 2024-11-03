@@ -590,7 +590,7 @@ export function csp <
 
     return secureHeaders({
 
-        referrerPolicy: 'strict-origin-when-cross-origin',
+        referrerPolicy: 'origin, same-origin, strict-origin',
 
         contentSecurityPolicy: {
 
