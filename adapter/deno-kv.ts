@@ -37,19 +37,20 @@ function hook (kv: Deno.Kv): Adapter {
 
         },
 
-        async put (id: string, link: string) {
+        async put (id: string, link: string, { ttl } = {}) {
 
             const urls = keys.urls(id);
             const create_date = keys.create_date(id);
 
             const versionstamp = null;
+            const expireIn = ttl?.milliseconds();
             const iso_date = new Date().toISOString();
 
             const { ok } = await kv.atomic()
                 .check({ versionstamp, key: urls })
                 .check({ versionstamp, key: create_date })
-                .set(urls, link)
-                .set(create_date, iso_date)
+                .set(urls, link, { expireIn })
+                .set(create_date, iso_date, { expireIn })
                 .commit()
             ;
 
