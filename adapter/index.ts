@@ -4,6 +4,8 @@ export interface Adapter {
 
     put (id: string, link: string): Promise<boolean>;
 
+    [Symbol.dispose] (): void;
+
 }
 
 

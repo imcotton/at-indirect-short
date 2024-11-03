@@ -2,8 +2,8 @@ import * as v from 'valibot';
 
 import { non_empty } from '../utils.ts';
 
-import type { AdapterGen } from './index.ts';
-export type              * from './index.ts';
+import type { Adapter, AdapterGen } from './index.ts';
+export type                       * from './index.ts';
 
 
 
@@ -19,7 +19,7 @@ export function gen_deno_kv (path?: string): AdapterGen {
 
 
 
-function hook (kv: Deno.Kv) {
+function hook (kv: Deno.Kv): Adapter {
 
     return {
 
@@ -55,6 +55,10 @@ function hook (kv: Deno.Kv) {
 
             return ok;
 
+        },
+
+        [Symbol.dispose] () {
+            kv.close();
         },
 
     };
