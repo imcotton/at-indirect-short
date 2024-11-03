@@ -346,3 +346,16 @@ Deno.test('signingAuth', async function () {
 
 });
 
+Deno.test('Adapter dispose', async function () {
+
+    using map = await make_map_object();
+
+    ast.assert(map);
+
+    const task = gen_deno_kv(':memory:');
+    using db = await task();
+
+    ast.assert(db);
+
+});
+

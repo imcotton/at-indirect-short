@@ -25,6 +25,10 @@ export const make_map_object: AdapterGen = function () {
 
         }),
 
+        [Symbol.dispose] () {
+            store.clear();
+        },
+
     };
 
 };
