@@ -7,8 +7,6 @@ import { csrf } from 'hono/csrf';
 import { validator } from 'hono/validator';
 import { HTTPException } from 'hono/http-exception';
 
-import * as v from 'valibot';
-
 import type { AdapterGen } from './adapter/index.ts';
 
 import { layout, Create, SigningPane } from './components/index.tsx';
@@ -128,10 +126,7 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
 
                 if (ctx.req.query('show') === 'page') {
 
-                    const { query } = v.parse(
-                        v.partial(v.object({ query: v.string() })),
-                        ctx.var,
-                    );
+                    const { query } = read_var(ctx.var);
 
                     return ctx.render(<Show { ...{ link, href, query } } />);
 
