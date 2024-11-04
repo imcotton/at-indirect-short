@@ -557,6 +557,16 @@ export const v_create = v.pipe(
 
 
 
+export const read_var = v.parser(v.partial(v.object({
+
+    ttl: v.number(),
+
+})));
+
+
+
+
+
 export async function calc_integrity (content: string, {
 
     algo = 'SHA-256' as 'SHA-256' | 'SHA-384' | 'SHA-512',
