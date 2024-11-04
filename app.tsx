@@ -19,7 +19,7 @@ import { duration_in_milliseconds } from './duration.ts';
 import { collection } from './assets.ts';
 
 import { noop, csp, cached, register, gen_fnv1a_hash,
-    parser, v_create, v_optional_signing_back,
+    parser, v_create, v_optional_signing_back, read_var,
     UUIDv4, UUIDv5_URL, compose_signing_url, calc_fingerprint,
     nmap, nothing, slugify, exception, challenge_,
 } from './utils.ts';
@@ -109,8 +109,10 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
 
                 const id = slug ?? await hash(link);
 
+                const { ttl = ttl_in_ms } = read_var(ctx.var);
+
                 const ok = await db.put(id, link, {
-                    ttl: nmap(duration_in_milliseconds, ttl_in_ms),
+                    ttl: nmap(duration_in_milliseconds, ttl),
                 });
 
                 if ((ok === false) && slug) {
