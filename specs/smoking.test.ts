@@ -447,3 +447,54 @@ Deno.test('cache with TTL', async function () {
 
 });
 
+Deno.test('take TTL from ctx.var', async function () {
+
+    const url = 'https://example.com';
+    const code = 'foobar';
+
+    using time = new FakeTime();
+
+    const app_local = await create_app(make_ttl_cache, {
+        insecure: true,
+        ttl_in_ms: 500,
+        async auth (ctx, next) {
+            ctx.set('ttl', 1000);
+            await next();
+        },
+    });
+
+    const client_local = testClient(app_local);
+
+    { // first put with code
+
+        const res = await client_local.index.$post({ form: { url, code } });
+        const txt = await res.text();
+
+        ast.assert(txt.endsWith(go(code)));
+
+    } { // first get same code
+
+        const res = await app_local.request(go(code));
+
+        ast.assertStrictEquals(res.headers.get('location'), url);
+
+    } { // pass default ttl but within ctx.var
+
+        time.tick(600);
+
+        const res = await app_local.request(go(code));
+
+        ast.assertStrictEquals(res.headers.get('location'), url);
+
+    } { // pass ctx.var ttl
+
+        time.tick(600);
+
+        const res = await app_local.request(go(code));
+
+        ast.assertStrictEquals(res.status, 404);
+
+    }
+
+});
+
