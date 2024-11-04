@@ -561,6 +561,8 @@ export const read_var = v.parser(v.partial(v.object({
 
     ttl: v.number(),
 
+    query: v.string(),
+
 })));
 
 
