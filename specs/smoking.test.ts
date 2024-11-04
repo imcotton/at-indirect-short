@@ -1,5 +1,6 @@
 import * as ast from 'jsr:@std/assert@1';
 import * as hex from 'jsr:@std/encoding@1/hex';
+import { FakeTime } from 'jsr:@std/testing@1/time';
 import { getCookies, setCookie } from 'jsr:@std/http@1/cookie';
 
 import { Hono } from 'hono';
@@ -7,6 +8,7 @@ import { testClient } from 'hono/testing';
 
 import { create_app } from '../app.tsx';
 import { gen_deno_kv } from '../adapter/deno-kv.ts';
+import { make_ttl_cache } from '../adapter/ttl-cache.ts';
 import { make_map_object } from '../adapter/map-object.ts';
 import { duration_in_milliseconds, duration_in_seconds } from '../duration.ts';
 import { calc_fingerprint, gen_fnv1a_hash,
@@ -349,6 +351,10 @@ Deno.test('signingAuth', async function () {
 
 Deno.test('Adapter dispose', async function () {
 
+    using cache = await make_ttl_cache();
+
+    ast.assert(cache);
+
     using map = await make_map_object();
 
     ast.assert(map);
@@ -377,6 +383,67 @@ Deno.test('Deno KV with TTL', async function () {
     }));
 
     ast.assertStrictEquals(await db.get(id), link);
+
+});
+
+Deno.test('cache with TTL', async function () {
+
+    using time = new FakeTime();
+
+    const ttl_in_ms = 5000;
+
+    const url = 'https://example.com';
+    const code = 'foobar';
+
+    const app = await create_app(make_ttl_cache, {
+        ttl_in_ms,
+        insecure: true,
+    });
+
+    const client = testClient(app);
+
+    { // first put with code
+
+        const res = await client.index.$post({ form: { url, code } });
+        const txt = await res.text();
+
+        ast.assert(txt.endsWith(go(code)));
+
+    } { // first get same code
+
+        const res = await app.request(go(code));
+
+        ast.assertStrictEquals(res.headers.get('location'), url);
+
+    } { // seconde put same code
+
+        const res = await client.index.$post({ form: { url, code } });
+
+        ast.assertStrictEquals(res.status, 409);
+
+    } { // cache missing
+
+        time.tick(ttl_in_ms + 100);
+
+        const res = await app.request(go(code));
+
+        ast.assertStrictEquals(res.status, 404);
+
+    } { // put without code
+
+        const put = await client.index.$post({ form: { url } });
+        const res = await put.text();
+        const get = await app.request(res);
+
+        ast.assertStrictEquals(get.headers.get('location'), url);
+
+        time.tick(ttl_in_ms + 100);
+
+        const second = await app.request(res);
+
+        ast.assertStrictEquals(second.status, 404);
+
+    }
 
 });
 
