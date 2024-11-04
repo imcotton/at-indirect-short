@@ -14,12 +14,14 @@ import type { AdapterGen } from './adapter/index.ts';
 import { layout, Create, SigningPane } from './components/index.tsx';
 import { Show, scriptSrc } from './components/show.tsx';
 
+import { duration_in_milliseconds } from './duration.ts';
+
 import { collection } from './assets.ts';
 
 import { noop, csp, cached, register, gen_fnv1a_hash,
     parser, v_create, v_optional_signing_back,
     UUIDv4, UUIDv5_URL, compose_signing_url, calc_fingerprint,
-    nmap, slugify, exception, challenge_,
+    nmap, nothing, slugify, exception, challenge_,
 } from './utils.ts';
 
 
@@ -31,6 +33,7 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
         auth = noop,
         encoding = gen_fnv1a_hash(),
         cache_name = 'assets-v1',
+        ttl_in_ms = nothing<number>(),
         signing_nav = false,
         signing_site = 'https://sign-poc.js.org',
         insecure = false,
@@ -106,7 +109,9 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
 
                 const id = slug ?? await hash(link);
 
-                const ok = await db.put(id, link);
+                const ok = await db.put(id, link, {
+                    ttl: nmap(duration_in_milliseconds, ttl_in_ms),
+                });
 
                 if ((ok === false) && slug) {
                     const message = `(${ slug }) already existed`;
