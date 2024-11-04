@@ -27,6 +27,16 @@ export type Predicate <T> = (_: T) => boolean;
 
 
 
+export function nothing <T> (): T | undefined {
+
+    return void 0;
+
+}
+
+
+
+
+
 export const noop = createMiddleware(async function (_, next) {
 
     await next();
