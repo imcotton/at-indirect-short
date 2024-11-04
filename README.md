@@ -52,6 +52,8 @@
 
     export default await make({
 
+        signing_nav: true,
+
         auth: signingAuth([
             // public key fingerprint - SHA256:xxxxxx
         ]),
