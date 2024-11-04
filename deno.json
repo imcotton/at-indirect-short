@@ -11,7 +11,7 @@
     "@std/text": "jsr:@std/text@1",
     "@std/uuid": "jsr:@std/uuid@1",
     "@libs/qrcode": "jsr:@libs/qrcode@~2.0.0",
-    "hono": "jsr:@hono/hono@^4.6.8",
+    "hono": "jsr:@hono/hono@^4.6.9",
     "valibot": "jsr:@valibot/valibot@~1.0.0-beta.3"
   },
   "tasks": {
