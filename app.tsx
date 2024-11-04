@@ -109,15 +109,19 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
 
                 const id = slug ?? await hash(link);
 
-                const { ttl = ttl_in_ms } = read_var(ctx.var);
+                {
 
-                const ok = await db.put(id, link, {
-                    ttl: nmap(duration_in_milliseconds, ttl),
-                });
+                    const { ttl = ttl_in_ms } = read_var(ctx.var);
 
-                if ((ok === false) && slug) {
-                    const message = `(${ slug }) already existed`;
-                    throw new HTTPException(409, { message });
+                    const ok = await db.put(id, link, {
+                        ttl: nmap(duration_in_milliseconds, ttl),
+                    });
+
+                    if ((ok === false) && slug) {
+                        const message = `(${ slug }) already existed`;
+                        throw new HTTPException(409, { message });
+                    }
+
                 }
 
                 const { href } = new URL(`/go/${ id }`, ctx.req.url);
