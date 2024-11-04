@@ -1,5 +1,6 @@
 import { make } from './deploy/deno.ts';
 import { signingAuth } from './helper.ts';
+import { mins } from './utils.ts';
 
 
 
@@ -10,6 +11,8 @@ const app: Deno.ServeDefaultExport = await make({
     kv_path: './db/kv',
 
     signing_nav: true,
+
+    ttl_in_ms: mins(60), // 1 hour
 
     auth: signingAuth([
 
