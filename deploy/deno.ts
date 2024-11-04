@@ -10,7 +10,7 @@ import { gen_fnv1a_hash } from '../utils.ts';
 
 export function make ({
 
-        auth, kv_path, cache_name, hash_seed, hash_enlarge,
+        auth, kv_path, cache_name, ttl_in_ms, hash_seed, hash_enlarge,
         signing_nav, signing_site,
 
 }: {
@@ -18,6 +18,7 @@ export function make ({
         auth?: MiddlewareHandler,
         kv_path?: string,
         cache_name?: string,
+        ttl_in_ms?: number,
         hash_seed?: string,
         hash_enlarge?: boolean,
         signing_nav?: boolean,
@@ -29,6 +30,7 @@ export function make ({
 
         auth,
         cache_name,
+        ttl_in_ms,
         signing_nav,
         signing_site,
 
