@@ -9,6 +9,7 @@ import { pico_css } from '../assets.ts';
 export { SigningPane } from './signing-pane.tsx';
 export { Create } from './create.tsx';
 export { Show } from './show.tsx';
+export { Go } from './go.tsx';
 
 
 
