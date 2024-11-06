@@ -126,9 +126,9 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
 
                 if (ctx.req.query('show') === 'page') {
 
-                    const { query } = read_var(ctx.var);
+                    const { session } = read_var(ctx.var);
 
-                    return ctx.render(<Show { ...{ link, href, query } } />);
+                    return ctx.render(<Show { ...{ link, href, session } } />);
 
                 }
 

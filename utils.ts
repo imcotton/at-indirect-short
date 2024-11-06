@@ -384,14 +384,14 @@ export function signingAuth (
 
                 const pub = hex.decodeHex(origin.pub);
                 const signature = hex.decodeHex(origin.signature);
-                const query = new URLSearchParams(origin).toString();
+                const session = new URLSearchParams(origin).toString();
 
-                return { ...origin, query, pub, signature, challenge };
+                return { ...origin, session, pub, signature, challenge };
 
             }),
         ), abort_early('invalid signing data')));
 
-        const { query, ...signed } = data;
+        const { session, ...signed } = data;
 
         const ok = await verify(signed);
 
@@ -409,7 +409,7 @@ export function signingAuth (
 
         }
 
-        ctx.set('query', query);
+        ctx.set('session', session);
 
         await next();
 
@@ -561,7 +561,7 @@ export const read_var = v.parser(v.partial(v.object({
 
     ttl: v.number(),
 
-    query: v.string(),
+    session: v.string(),
 
 })));
 
