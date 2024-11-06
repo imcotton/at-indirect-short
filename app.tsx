@@ -9,7 +9,7 @@ import { HTTPException } from 'hono/http-exception';
 
 import type { AdapterGen } from './adapter/index.ts';
 
-import { layout, Create, SigningPane } from './components/index.tsx';
+import { layout, Create, SigningPane, Go } from './components/index.tsx';
 import { Show, scriptSrc } from './components/show.tsx';
 
 import { collection } from './assets.ts';
@@ -135,6 +135,21 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
             },
 
         )
+
+        .get( '/go', csp(), ctx => ctx.render(<Go />))
+
+        .post('/go', csp(), async function (ctx) {
+
+            const form = await ctx.req.formData();
+            const goto = `/go/${ form.get('id') }`;
+
+            return ctx.html(`<!DOCTYPE html> <head>
+                <meta   http-equiv="refresh"
+                        content="0; url=${ goto }"
+                />
+            </head>`);
+
+        })
 
         .get('/go/:id', async function (ctx) {
 

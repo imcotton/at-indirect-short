@@ -73,7 +73,13 @@ export function Create ({
         <main class={ style.main }>
             <div class="container">
 
-                <h1 class="center">URL Shortener</h1>
+                <h1 class="center">
+                    URL Shortener <a href="/go"
+                        role="button"
+                        class="contrast"
+                        x-go-btn
+                    >/go</a>
+                </h1>
 
                 <form method="post" action={ action }>
 
@@ -159,6 +165,10 @@ const style = {
         & code.wrap {
             word-break: break-all;
             border: 1px solid var(--pico-form-element-valid-active-border-color);
+        }
+
+        & [x-go-btn] {
+            vertical-align: text-bottom;
         }
 
         & [x-fp]:not(:has(code:empty)):before {
