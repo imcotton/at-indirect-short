@@ -12,17 +12,17 @@ import { calc_integrity, map_quotes } from '../utils.ts';
 
 
 
-export function Show ({ link, href, query }: {
+export function Show ({ link, href, session }: {
 
         link: string,
         href: string,
-        query?: string,
+        session?: string,
 
 }) {
 
     const svg = qrcode(href, { output: 'svg', border: 2 });
 
-    const back = query ? `/?${ query }` : '/';
+    const back = session ? `/?${ session }` : '/';
 
     return (<main class="container">
 
