@@ -4,12 +4,13 @@ import { Hono, type Env } from 'hono';
 import { jsx } from 'hono/jsx';
 import { setCookie } from 'hono/cookie';
 import { csrf } from 'hono/csrf';
+import { bodyLimit } from 'hono/body-limit';
 import { validator } from 'hono/validator';
 import { HTTPException } from 'hono/http-exception';
 
 import type { AdapterGen } from './adapter/index.ts';
 
-import { layout, Create, SigningPane } from './components/index.tsx';
+import { layout, Create, SigningPane, Go } from './components/index.tsx';
 import { Show, scriptSrc } from './components/show.tsx';
 
 import { collection } from './assets.ts';
@@ -131,6 +132,39 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
                 }
 
                 return ctx.text(href);
+
+            },
+
+        )
+
+        .get('/go', csp(), function (ctx) {
+
+            const { open } = ctx.req.query();
+
+            return ctx.render(<Go
+
+                open_in_new_page={ open === 'new' }
+
+            />);
+
+        })
+
+        .post('/go',
+
+            csp(),
+
+            bodyLimit({ maxSize: 1024 }), // 1 kb max for slug
+
+            async function (ctx) {
+
+                const form = await ctx.req.formData();
+                const id = nmap(slugify, form.get('id')?.toString());
+
+                return ctx.html(`<!DOCTYPE html> <head>
+                    <meta   http-equiv="refresh"
+                            content="0; url=/go/${ id }"
+                    />
+                </head>`);
 
             },
 
