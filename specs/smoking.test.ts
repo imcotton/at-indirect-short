@@ -1,6 +1,7 @@
 import * as ast from 'jsr:@std/assert@1';
 import * as hex from 'jsr:@std/encoding@1/hex';
 import { FakeTime } from 'jsr:@std/testing@1/time';
+import { spy, assertSpyCalls } from 'jsr:@std/testing@1/mock';
 import { getCookies, setCookie } from 'jsr:@std/http@1/cookie';
 
 import { Hono } from 'hono';
@@ -317,6 +318,29 @@ Deno.test('signingAuth', async function () {
         const txt = await res.text();
 
         ast.assertStringIncludes(txt, 'signature=');
+
+    }
+
+    { // abort early on failed signature verification
+
+        const fingerprint_lookup = spy(() => true);
+
+        const client = testClient(await create_app(make_map_object, {
+            auth: signingAuth(fingerprint_lookup),
+            insecure: true,
+        }));
+
+        const query = { show: 'page' };
+
+        const res = await client.index.$post(
+            // @ts-expect-error optional query
+            { query, form: { ...form, pub: 'abcd1234' } },
+            { headers },
+        );
+
+        ast.assertStrictEquals(res.ok, false);
+        ast.assertStrictEquals(res.status, 401);
+        assertSpyCalls(fingerprint_lookup, 0);
 
     }
 
