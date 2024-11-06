@@ -393,6 +393,12 @@ export function signingAuth (
 
         const { query, ...signed } = data;
 
+        const ok = await verify(signed);
+
+        if (ok !== true) {
+            throw new HTTPException(401, { message: 'verification failed' });
+        }
+
         const fingerprint = await calc_fingerprint(signed.pub);
 
         if (authorized(fingerprint) !== true) {
@@ -401,12 +407,6 @@ export function signingAuth (
                 message: `unauthorized fingerprint - ${ fingerprint }`,
             });
 
-        }
-
-        const ok = await verify(signed);
-
-        if (ok !== true) {
-            throw new HTTPException(401, { message: 'verification failed' });
         }
 
         ctx.set('query', query);
