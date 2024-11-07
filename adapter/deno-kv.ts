@@ -23,7 +23,7 @@ function hook (kv: Deno.Kv): Adapter {
 
     return {
 
-        async get (id: string) {
+        async get (id) {
 
             const { success, output } = await kv.get(keys.urls(id), {
 
@@ -37,7 +37,7 @@ function hook (kv: Deno.Kv): Adapter {
 
         },
 
-        async put (id: string, link: string, { ttl } = {}) {
+        async put (id, link, { ttl } = {}) {
 
             const urls = keys.urls(id);
             const create_date = keys.create_date(id);
