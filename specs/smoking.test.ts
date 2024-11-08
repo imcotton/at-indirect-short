@@ -11,9 +11,8 @@ import { create_app } from '../app.tsx';
 import { gen_deno_kv } from '../adapter/deno-kv.ts';
 import { make_ttl_cache } from '../adapter/ttl-cache.ts';
 import { make_map_object } from '../adapter/map-object.ts';
-import { duration_in_milliseconds, duration_in_seconds } from '../duration.ts';
 import { calc_fingerprint, gen_fnv1a_hash,
-    HMAC_SHA256, signingAuth, UUIDv4, webcrypto, challenge_,
+    HMAC_SHA256, signingAuth, UUIDv4, webcrypto, challenge_, duration,
 } from '../utils.ts';
 
 
@@ -399,11 +398,11 @@ Deno.test('Deno KV with TTL', async function () {
     using db = await init();
 
     ast.assert(await db.put(id, link, {
-        ttl: duration_in_milliseconds(80),
+        ttl: duration.from_milliseconds(80),
     }));
 
     ast.assertFalse(await db.put(id, link, {
-        ttl: duration_in_seconds(3),
+        ttl: duration.from_seconds(3),
     }));
 
     ast.assertStrictEquals(await db.get(id), link);

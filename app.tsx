@@ -12,14 +12,12 @@ import type { AdapterGen } from './adapter/index.ts';
 import { layout, Create, SigningPane } from './components/index.tsx';
 import { Show, scriptSrc } from './components/show.tsx';
 
-import { duration_in_milliseconds } from './duration.ts';
-
 import { collection } from './assets.ts';
 
 import { noop, csp, cached, register, gen_fnv1a_hash,
     parser, v_create, v_optional_signing_back, read_var,
     UUIDv4, UUIDv5_URL, compose_signing_url, calc_fingerprint,
-    nmap, nothing, slugify, exception, challenge_,
+    nmap, nothing, slugify, exception, challenge_, duration,
 } from './utils.ts';
 
 
@@ -112,7 +110,7 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
                     const { ttl = ttl_in_ms } = read_var(ctx.var);
 
                     const ok = await db.put(id, link, {
-                        ttl: nmap(duration_in_milliseconds, ttl),
+                        ttl: nmap(duration.from_milliseconds, ttl),
                     });
 
                     if ((ok === false) && slug) {

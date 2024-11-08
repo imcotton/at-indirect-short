@@ -10,7 +10,7 @@ export interface Duration {
 
 
 
-export function duration_in_seconds (n: number): Duration {
+export function from_seconds (n: number): Duration {
 
     return make(n * thousands);
 
@@ -20,7 +20,7 @@ export function duration_in_seconds (n: number): Duration {
 
 
 
-export function duration_in_milliseconds (n: number): Duration {
+export function from_milliseconds (n: number): Duration {
 
     return make(n);
 

@@ -17,6 +17,8 @@ import * as v from 'valibot';
 
 export const { crypto: webcrypto } = globalThis;
 
+export * as duration from './duration.ts';
+
 
 
 
