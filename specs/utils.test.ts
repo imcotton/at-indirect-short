@@ -8,6 +8,7 @@ import {
 
     exception,
     register,
+    duration,
 
 } from '../utils.ts';
 
@@ -104,6 +105,24 @@ describe(utils, 'register', function () {
         const txt = await res.text();
 
         ast.assertStrictEquals(txt, data);
+
+    });
+
+});
+
+
+
+
+
+describe(utils, 'duration', function () {
+
+    it('reading from seconds', function () {
+
+        const sec = 42;
+
+        const d = duration.from_seconds(sec);
+
+        ast.assertStrictEquals(d.seconds(), sec);
 
     });
 
