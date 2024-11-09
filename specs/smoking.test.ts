@@ -521,3 +521,44 @@ Deno.test('take TTL from ctx.var', async function () {
 
 });
 
+Deno.test('/go to page', async function () {
+
+    { // the /go page
+
+        const res = await client.go.$get();
+        const html = await res.text();
+
+        ast.assertStringIncludes(html, `method="post" action="/go"`);
+        ast.assertStringIncludes(html, `target="_self"`);
+
+    } { // the /go page that opens in new window
+
+        const res = await app.request('/go?open=new')
+        const html = await res.text();
+
+        ast.assertStringIncludes(html, `target="_blank"`);
+
+    } { // post to redirect
+
+        const id = 'foobar';
+
+        const res = await client.go.$post({ form: { id } });
+        const html = await res.text();
+
+        ast.assertStringIncludes(html, `http-equiv="refresh"`);
+        ast.assertStringIncludes(html, go(id));
+
+    } { // id slugify
+
+        const id = '    hello, world ';
+
+        const res = await client.go.$post({ form: { id } });
+        const html = await res.text();
+
+        ast.assertStringIncludes(html, `http-equiv="refresh"`);
+        ast.assertStringIncludes(html, go('hello-world'));
+
+    }
+
+});
+
