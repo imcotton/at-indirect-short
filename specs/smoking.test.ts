@@ -521,3 +521,24 @@ Deno.test('take TTL from ctx.var', async function () {
 
 });
 
+Deno.test('/go to page', async function () {
+
+    { // the /go page
+
+        const res = await client.go.$get();
+        const html = await res.text();
+
+        ast.assertStringIncludes(html, 'method="post" action="/go"');
+
+    } { // post to redirect
+
+        const id = 'foobar';
+
+        const { headers } = await client.go.$post({ form: { id } });
+
+        ast.assertStrictEquals(headers.get('location'), go(id));
+
+    }
+
+});
+
