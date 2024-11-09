@@ -616,7 +616,7 @@ export function csp <
 
     return secureHeaders({
 
-        referrerPolicy: 'origin, same-origin, strict-origin',
+        referrerPolicy: 'same-origin',
 
         contentSecurityPolicy: {
 
