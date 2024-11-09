@@ -141,8 +141,15 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
         .post('/go', csp(), async function (ctx) {
 
             const form = await ctx.req.formData();
+            const redirect = `/go/${ form.get('id') }`;
 
-            return ctx.redirect(`/go/${ form.get('id') }`);
+            return ctx.html(`<!DOCTYPE html>
+                <head>
+                    <meta   http-equiv="refresh"
+                            content="0;URL='${ redirect }'"
+                    />
+                </head>
+            `);
 
         })
 
