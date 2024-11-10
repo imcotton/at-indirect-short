@@ -4,18 +4,19 @@ import { Hono, type Env } from 'hono';
 import { jsx } from 'hono/jsx';
 import { setCookie } from 'hono/cookie';
 import { csrf } from 'hono/csrf';
+import { bodyLimit } from 'hono/body-limit';
 import { validator } from 'hono/validator';
 import { HTTPException } from 'hono/http-exception';
 
 import type { AdapterGen } from './adapter/index.ts';
 
-import { layout, Create, SigningPane } from './components/index.tsx';
+import { layout, Create, SigningPane, Go } from './components/index.tsx';
 import { Show, scriptSrc } from './components/show.tsx';
 
 import { collection } from './assets.ts';
 
 import { noop, csp, cached, register, gen_fnv1a_hash,
-    parser, v_create, v_optional_signing_back, read_var,
+    parser, v_create, v_id_slugify, v_optional_signing_back, read_var,
     UUIDv4, UUIDv5_URL, compose_signing_url, calc_fingerprint,
     nmap, nothing, slugify, exception, challenge_, duration,
 } from './utils.ts';
@@ -131,6 +132,38 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
                 }
 
                 return ctx.text(href);
+
+            },
+
+        )
+
+        .get('/go', csp(), function (ctx) {
+
+            return ctx.render(<Go
+
+                open_in_new_page={ ctx.req.query('open') === 'new' }
+
+            />);
+
+        })
+
+        .post('/go',
+
+            csp(),
+
+            bodyLimit({ maxSize: 1024 }), // 1 kb max for slug
+
+            validator('form', parser(v_id_slugify)),
+
+            function (ctx) {
+
+                const { id } = ctx.req.valid('form');
+
+                return ctx.html(`<!DOCTYPE html> <head>
+                    <meta   http-equiv="refresh"
+                            content="0; url=/go/${ id }"
+                    />
+                </head>`);
 
             },
 
