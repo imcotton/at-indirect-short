@@ -11,7 +11,8 @@ import * as hex from '@std/encoding/hex';
 import { generate }      from '@std/uuid/v5';
 import { NAMESPACE_URL } from '@std/uuid/constants';
 
-export { slugify } from '@std/text/unstable-slugify';
+import { slugify } from '@std/text/unstable-slugify';
+export { slugify };
 
 import * as v from 'valibot';
 
@@ -554,6 +555,16 @@ export const v_create = v.pipe(
     }),
 
 );
+
+
+
+
+
+export const v_id_slugify = v.object({
+
+    id: v.pipe(v.string(), v.transform(slugify)),
+
+});
 
 
 
