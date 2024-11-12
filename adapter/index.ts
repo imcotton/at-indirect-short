@@ -14,6 +14,8 @@ export interface Adapter {
 
     }): Promise<boolean>;
 
+    del (id: string): Promise<boolean>;
+
     [Symbol.dispose] (): void;
 
 }

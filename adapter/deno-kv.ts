@@ -58,6 +58,21 @@ function hook (kv: Deno.Kv): Adapter {
 
         },
 
+        async del (id) {
+
+            const urls = keys.urls(id);
+            const create_date = keys.create_date(id);
+
+            const { ok } = await kv.atomic()
+                .delete(urls)
+                .delete(create_date)
+                .commit()
+            ;
+
+            return ok;
+
+        },
+
         [Symbol.dispose] () {
             kv.close();
         },
