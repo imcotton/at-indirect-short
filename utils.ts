@@ -616,7 +616,7 @@ export function csp <
             'https://dash.deno.com',  // Deno Deploy Playground
         ],
 
-}: NonNullable<NonNullable<P>['contentSecurityPolicy'] > = {}) {
+}: NonNullable<NonNullable<P>['contentSecurityPolicy']> = {}) {
 
     const data = 'data:';
     const none = wrap_by_quotes('none');
