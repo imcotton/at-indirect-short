@@ -389,6 +389,31 @@ Deno.test('Adapter dispose', async function () {
 
 });
 
+Deno.test('Adapter del', async function () {
+
+    const id = 'foobar';
+    const link = 'https://example.com';
+
+    const adapters = [
+        make_ttl_cache,
+        make_map_object,
+        gen_deno_kv(':memory:'),
+    ];
+
+    for (const task of adapters) {
+
+        using db = await task();
+
+        ast.assert(null  == await db.get(id));
+        ast.assert(true === await db.put(id, link));
+        ast.assert(link === await db.get(id));
+        ast.assert(true === await db.del(id));
+        ast.assert(null  == await db.get(id));
+
+    }
+
+});
+
 Deno.test('Deno KV with TTL', async function () {
 
     const id = 'foobar';

@@ -25,6 +25,8 @@ export const make_map_object: AdapterGen = function () {
 
         }),
 
+        del: (id) => Promise.resolve(store.delete(id)),
+
         [Symbol.dispose] () {
             store.clear();
         },

@@ -27,6 +27,8 @@ export const make_ttl_cache: AdapterGen = function () {
 
         }),
 
+        del: (id) => Promise.resolve(cache.delete(id)),
+
         [Symbol.dispose] () {
             cache.clear();
         },
