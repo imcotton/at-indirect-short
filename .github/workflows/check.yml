@@ -33,7 +33,7 @@ jobs:
           deno coverage --exclude=./specs
 
       - name: Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: cov.lcov
           use_oidc: true
