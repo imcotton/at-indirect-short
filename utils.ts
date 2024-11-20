@@ -82,6 +82,39 @@ export function gen_fnv1a_hash ({
 
 
 
+export function gen_fnv1a_hash_pure_js ({
+
+        key = `Cool URIs Don't Change`,
+        large = false,
+
+} = {}) {
+
+    return async function () {
+
+        const { default: fnv1a } = await import('@sindresorhus/fnv1a');
+        const { encodeBase58 } = await import('@std/encoding/base58');
+
+        return async function (message: string) {
+
+            const entropy = await HMAC_SHA256({ key, message });
+
+            const size = large ? 64 : 32;
+
+            const bn = fnv1a(new Uint8Array(entropy), { size });
+            const hash = hex.decodeHex(bn.toString(16));
+
+            return encodeBase58(hash);
+
+        };
+
+    };
+
+}
+
+
+
+
+
 export function register (it: Iterable<{ href: string, remote: string }>, {
 
         timeout = 5000,
