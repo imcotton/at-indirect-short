@@ -33,6 +33,7 @@ export async function create_app <E extends Env> (
 
 {
 
+        init = noop,
         auth = noop,
         cache_name = 'assets-v1',
         ttl_in_ms = nothing<number>(),
@@ -47,6 +48,8 @@ export async function create_app <E extends Env> (
     const extend = register(collection);
 
     return extend(new Hono<E>().get('/static/*', cached(cache_name)))
+
+        .use(init)
 
         .use(layout)
 
