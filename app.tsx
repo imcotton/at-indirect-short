@@ -28,6 +28,7 @@ import { noop, csp, cached, register, gen_fnv1a_hash,
 export async function create_app <E extends Env> (storage: AdapterGen, {
 
         auth = noop,
+        async_local_storage = noop,
         encoding = gen_fnv1a_hash(),
         cache_name = 'assets-v1',
         ttl_in_ms = nothing<number>(),
@@ -43,6 +44,8 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
     const extend = register(collection);
 
     return extend(new Hono<E>().get('/static/*', cached(cache_name)))
+
+        .use(async_local_storage)
 
         .use(layout)
 
