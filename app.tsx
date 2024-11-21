@@ -8,6 +8,7 @@ import { bodyLimit } from 'hono/body-limit';
 import { validator } from 'hono/validator';
 import { HTTPException } from 'hono/http-exception';
 
+import type { Encoder } from './encoder/index.ts';
 import type { AdapterGen } from './adapter/index.ts';
 
 import { layout, Create, SigningPane, Go } from './components/index.tsx';
@@ -15,7 +16,7 @@ import { Show, scriptSrc } from './components/show.tsx';
 
 import { collection } from './assets.ts';
 
-import { noop, csp, cached, register, gen_fnv1a_hash,
+import { noop, csp, cached, register,
     parser, v_create, v_id_slugify, v_optional_signing_back, read_var,
     UUIDv4, UUIDv5_URL, compose_signing_url, calc_fingerprint,
     nmap, nothing, slugify, exception, challenge_, duration,
@@ -25,10 +26,14 @@ import { noop, csp, cached, register, gen_fnv1a_hash,
 
 
 
-export async function create_app <E extends Env> (storage: AdapterGen, {
+export async function create_app <E extends Env> (
+
+        hash: Encoder,
+        storage: AdapterGen,
+
+{
 
         auth = noop,
-        encoding = gen_fnv1a_hash(),
         cache_name = 'assets-v1',
         ttl_in_ms = nothing<number>(),
         signing_nav = false,
@@ -38,7 +43,6 @@ export async function create_app <E extends Env> (storage: AdapterGen, {
 } = {}) {
 
     const db = await storage();
-    const hash = await encoding();
 
     const extend = register(collection);
 
