@@ -9,7 +9,7 @@ import { gen_fnv1a_hash } from '../encoder/npm-pure.ts';
 
 
 
-export function make ({
+export async function make ({
 
         auth, kv_path, cache_name, ttl_in_ms, hash_seed, hash_enlarge,
         signing_nav, signing_site,
@@ -34,16 +34,15 @@ export function make ({
 
     const storage = gen_cloudflare_kv(kv_path);
 
-    const async_local_storage = contextStorage();
-
-    return create_app(hash, storage, {
+    const app = await create_app(hash, storage, {
         auth,
-        async_local_storage,
         cache_name,
         ttl_in_ms,
         signing_nav,
         signing_site,
     });
+
+    return app.use(contextStorage());
 
 }
 
