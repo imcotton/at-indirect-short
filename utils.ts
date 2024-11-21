@@ -50,38 +50,6 @@ export const noop = createMiddleware(async function (_, next) {
 
 
 
-export function gen_fnv1a_hash ({
-
-        key = `Cool URIs Don't Change`,
-        large = false,
-
-} = {}) {
-
-    return async function () {
-
-        const { crypto: std_crypto } = await import('@std/crypto/crypto');
-        const { encodeBase58 } = await import('@std/encoding/base58');
-
-        return async function (message: string) {
-
-            const entropy = await HMAC_SHA256({ key, message });
-
-            const algo = large ? 'FNV64A' : 'FNV32A';
-
-            const hash = await std_crypto.subtle.digest(algo, entropy);
-
-            return encodeBase58(hash);
-
-        };
-
-    };
-
-}
-
-
-
-
-
 export function register (it: Iterable<{ href: string, remote: string }>, {
 
         timeout = 5000,
