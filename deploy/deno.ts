@@ -2,7 +2,7 @@ import type { MiddlewareHandler } from 'hono/types';
 
 import { create_app } from '../app.tsx';
 import { gen_deno_kv } from '../adapter/deno-kv.ts';
-import { gen_fnv1a_hash } from '../utils.ts';
+import { gen_fnv1a_hash } from '../encoder/jsr-std-wasm.ts';
 
 
 
@@ -26,19 +26,19 @@ export function make ({
 
 } = {}): Promise<Deno.ServeDefaultExport> {
 
-    return create_app(gen_deno_kv(kv_path), {
+    const hash = gen_fnv1a_hash({
+        key: hash_seed,
+        large: hash_enlarge,
+    });
 
+    const storage = gen_deno_kv(kv_path);
+
+    return create_app(hash, storage, {
         auth,
         cache_name,
         ttl_in_ms,
         signing_nav,
         signing_site,
-
-        encoding: gen_fnv1a_hash({
-            key: hash_seed,
-            large: hash_enlarge,
-        }),
-
     });
 
 }

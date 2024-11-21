@@ -8,18 +8,20 @@ import { Hono } from 'hono';
 import { testClient } from 'hono/testing';
 
 import { create_app } from '../app.tsx';
+import { gen_fnv1a_hash } from '../encoder/jsr-std-wasm.ts';
 import { gen_deno_kv } from '../adapter/deno-kv.ts';
 import { make_ttl_cache } from '../adapter/ttl-cache.ts';
 import { make_map_object } from '../adapter/map-object.ts';
-import { calc_fingerprint, gen_fnv1a_hash,
+import { calc_fingerprint,
     HMAC_SHA256, signingAuth, UUIDv4, webcrypto, challenge_, duration,
 } from '../utils.ts';
 
 
 
 
+const hashing = gen_fnv1a_hash();
 
-const app = await create_app(gen_deno_kv(':memory:'), {
+const app = await create_app(hashing, gen_deno_kv(':memory:'), {
     insecure: true,
     signing_nav: true,
 });
@@ -137,8 +139,9 @@ Deno.test('throw on same code twice', async function () {
 
 Deno.test('advanced config', async function () {
 
-    const other = await create_app(make_map_object, {
-        encoding: gen_fnv1a_hash({ large: true, key: 'ayb' }),
+    const hashing_local = gen_fnv1a_hash({ large: true, key: 'ayb' });
+
+    const other = await create_app(hashing_local, make_map_object, {
         insecure: true,
     });
 
@@ -194,7 +197,7 @@ Deno.test('advanced config', async function () {
 
 Deno.test('default app', async function () {
 
-    await create_app(make_map_object);
+    await create_app(hashing, make_map_object);
 
 });
 
@@ -305,7 +308,7 @@ Deno.test('signingAuth', async function () {
 
     { // ok on show page
 
-        const client = testClient(await create_app(make_map_object, {
+        const client = testClient(await create_app(hashing, make_map_object, {
             auth: signingAuth([ fingerprint ]),
             insecure: true,
         }));
@@ -324,7 +327,7 @@ Deno.test('signingAuth', async function () {
 
         const fingerprint_lookup = spy(() => true);
 
-        const client = testClient(await create_app(make_map_object, {
+        const client = testClient(await create_app(hashing, make_map_object, {
             auth: signingAuth(fingerprint_lookup),
             insecure: true,
         }));
@@ -443,7 +446,7 @@ Deno.test('cache with TTL', async function () {
     const url = 'https://example.com';
     const code = 'foobar';
 
-    const app = await create_app(make_ttl_cache, {
+    const app = await create_app(hashing, make_ttl_cache, {
         ttl_in_ms,
         insecure: true,
     });
@@ -502,7 +505,7 @@ Deno.test('take TTL from ctx.var', async function () {
 
     using time = new FakeTime();
 
-    const app_local = await create_app(make_ttl_cache, {
+    const app_local = await create_app(hashing, make_ttl_cache, {
         insecure: true,
         ttl_in_ms: 500,
         async auth (ctx, next) {
