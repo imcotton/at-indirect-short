@@ -568,19 +568,30 @@ Deno.test('/go to page', async function () {
 
     } { // post to redirect
 
-        const id = 'foobar';
+        const code = 'foobar';
 
-        const res = await client.go.$post({ form: { id } });
+        const res = await client.go.$post({ form: { code } });
         const html = await res.text();
 
         ast.assertStringIncludes(html, `http-equiv="refresh"`);
-        ast.assertStringIncludes(html, go(id));
+        ast.assertStringIncludes(html, go(code));
 
-    } { // id slugify
+    } { // code non slugify
 
-        const id = '    hello, world ';
+        const code = 'HelloWorld';
 
-        const res = await client.go.$post({ form: { id } });
+        const res = await client.go.$post({ form: { code } });
+        const html = await res.text();
+
+        ast.assertStringIncludes(html, `http-equiv="refresh"`);
+        ast.assertStringIncludes(html, go(code));
+
+    } { // code slugify
+
+        const code = '    hello, world ';
+        const slugify_check = 'on';
+
+        const res = await client.go.$post({ form: { code, slugify_check } });
         const html = await res.text();
 
         ast.assertStringIncludes(html, `http-equiv="refresh"`);
