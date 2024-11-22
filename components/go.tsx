@@ -40,7 +40,7 @@ export const Go = memo(function ({ open_in_new_page }: {
 
                         <fieldset role="group">
 
-                            <input  name="id"
+                            <input  name="code"
                                     type="text"
                                     inputmode="text"
                                     autocorrect="off"
@@ -55,6 +55,17 @@ export const Go = memo(function ({ open_in_new_page }: {
                             />
 
                         </fieldset>
+
+                        <fieldset>
+                            <label>
+                                <input  name="slugify_check"
+                                        type="checkbox"
+                                        checked
+                                />
+                                auto slugify
+                            </label>
+                        </fieldset>
+
                     </form>
 
                     <footer>

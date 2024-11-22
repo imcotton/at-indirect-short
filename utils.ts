@@ -528,9 +528,11 @@ export const v_create = v.pipe(
 
 
 
-export const v_id_slugify = v.object({
+export const v_code_slugify = v.object({
 
-    id: v.pipe(v.string(), v.transform(slugify)),
+    code: v.pipe(v.string(), v.trim(), v.minLength(1)),
+
+    slugify_check: v.optional(v.literal('on')),
 
 });
 

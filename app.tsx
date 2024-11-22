@@ -17,7 +17,7 @@ import { Show, scriptSrc } from './components/show.tsx';
 import { collection } from './assets.ts';
 
 import { noop, csp, cached, register,
-    parser, v_create, v_id_slugify, v_optional_signing_back, read_var,
+    parser, v_create, v_code_slugify, v_optional_signing_back, read_var,
     UUIDv4, UUIDv5_URL, compose_signing_url, calc_fingerprint,
     nmap, nothing, slugify, exception, challenge_, duration,
 } from './utils.ts';
@@ -160,11 +160,13 @@ export async function create_app <E extends Env> (
 
             bodyLimit({ maxSize: 1024 }), // 1 kb max for slug
 
-            validator('form', parser(v_id_slugify)),
+            validator('form', parser(v_code_slugify)),
 
             function (ctx) {
 
-                const { id } = ctx.req.valid('form');
+                const { code, slugify_check } = ctx.req.valid('form');
+
+                const id = slugify_check === 'on' ? slugify(code) : code;
 
                 return ctx.html(`<!DOCTYPE html> <head>
                     <meta   http-equiv="refresh"
