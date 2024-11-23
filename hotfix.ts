@@ -23,6 +23,14 @@ export const esbuild_plugin: Plugin = {
 
         });
 
+        build.onResolve({ filter: /\.ts$/ }, ({ path, kind, resolveDir }) => {
+
+            const fixed = path.replace(/ts$/, 'js');
+
+            return build.resolve(fixed, { kind, resolveDir });
+
+        });
+
     },
 
 };
