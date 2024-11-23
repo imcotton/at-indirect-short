@@ -5,5 +5,3 @@ export { bearerAuth } from 'hono/bearer-auth';
 
 export { signingAuth } from './utils.ts';
 
-export { hotfix } from './deploy/hotfix.ts';
-
