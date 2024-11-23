@@ -4,7 +4,7 @@ import { css } from 'hono/css';
 import { raw } from 'hono/html';
 import { jsx } from 'hono/jsx';
 
-import { qrcode } from '@libs/qrcode';
+import { qrcode } from 'qrcode';
 
 import { calc_integrity, map_quotes } from '../utils.ts';
 
