@@ -36,7 +36,9 @@
 
 
 <br><br><br><br><br>
-## Examples (on Deno Deploy)
+## Examples
+
+### Deno Deploy
 
 - no auth, one liner
 
@@ -86,6 +88,12 @@
 
     })
     ```
+
+### Cloudflare Workers
+
+Similar to above but with extra setups,
+try use this template [repo](https://github.com/imcotton/temp-cf-indirect-short) as scaffolding.
+
 
 
 
