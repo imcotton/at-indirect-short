@@ -17,7 +17,7 @@ export function make ({
 }: {
 
         auth?: MiddlewareHandler,
-        kv_path: string,
+        kv_path?: string,
         cache_name?: string,
         ttl_in_ms?: number,
         hash_seed?: string,
@@ -25,14 +25,14 @@ export function make ({
         signing_nav?: boolean,
         signing_site?: string,
 
-}): Promise<Deno.ServeDefaultExport> {
+} = {}): Promise<Deno.ServeDefaultExport> {
 
     const hash = gen_fnv1a_hash({
         key: hash_seed,
         large: hash_enlarge,
     });
 
-    const storage = gen_cloudflare_kv(kv_path);
+    const storage = gen_cloudflare_kv(kv_path ?? 'MY_KV');
 
     const init = contextStorage();
 
@@ -51,7 +51,7 @@ export function make ({
 
 
 
-const app: Deno.ServeDefaultExport = await make({ kv_path: 'MY_KV' });
+const app: Deno.ServeDefaultExport = await make();
 
 export default app;
 
