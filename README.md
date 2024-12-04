@@ -91,8 +91,19 @@
 
 ### Cloudflare Workers
 
-Similar to above but with extra setups,
-try use this template [repo](https://github.com/imcotton/temp-cf-indirect-short) as scaffolding.
+install
+
+```sh
+npx jsr add @indirect/short
+```
+
+import
+
+```js
+import { make } from '@indirect/short/deploy/unstable-cloudflare'
+```
+
+More details, please use this template [repo](https://github.com/imcotton/temp-cf-indirect-short) as scaffolding.
 
 
 
