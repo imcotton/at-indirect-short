@@ -1,4 +1,4 @@
-import type { Env, Hono, MiddlewareHandler } from 'hono';
+import type { Env, Hono, MiddlewareHandler, Context } from 'hono';
 import { cache } from 'hono/cache';
 import { getCookie } from 'hono/cookie';
 import { createMiddleware } from 'hono/factory';
@@ -332,9 +332,12 @@ export async function calc_fingerprint (source: string | BufferSource) {
 
 
 
-export function signingAuth (
+export function signingAuth <E extends Env> (
 
-        check: Iterable<string> | Predicate<string>,
+        check:
+            | Iterable<string>
+            | ((fingerprint: string, ctx: Context<E>) => boolean)
+            ,
 
 ): MiddlewareHandler {
 
@@ -372,7 +375,7 @@ export function signingAuth (
 
         const fingerprint = await calc_fingerprint(signed.pub);
 
-        if (authorized(fingerprint) !== true) {
+        if (authorized(fingerprint, ctx) !== true) {
 
             throw new HTTPException(401, {
                 message: `unauthorized fingerprint - ${ fingerprint }`,
