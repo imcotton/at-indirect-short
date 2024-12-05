@@ -23,11 +23,15 @@ export const esbuild_plugin: Plugin = {
 
         });
 
-        build.onResolve({ filter: /\.ts$/ }, ({ path, kind, resolveDir }) => {
+        build.onResolve({ filter: /\.ts$/ }, async ({ path, kind, resolveDir }) => {
 
-            const fixed = path.replace(/ts$/, 'js');
+            if (resolveDir.includes('/node_modules/@')) {
 
-            return build.resolve(fixed, { kind, resolveDir });
+                const fixed = path.replace(/ts$/, 'js');
+
+                return build.resolve(fixed, { kind, resolveDir });
+
+            }
 
         });
 
