@@ -51,7 +51,7 @@ export function make ({
 
 
 
-const app: Deno.ServeDefaultExport = await make();
+const app: Deno.ServeDefaultExport = /* @__PURE__ */ await make();
 
 export default app;
 
