@@ -94,7 +94,7 @@
 install
 
 ```sh
-npx jsr add @indirect/short
+npx jsr add @indirect/short@1
 ```
 
 import
@@ -103,7 +103,8 @@ import
 import { make } from '@indirect/short/deploy/unstable-cloudflare'
 ```
 
-More details, please use this template [repo](https://github.com/imcotton/temp-cf-indirect-short) as scaffolding.
+> [!TIP]
+> More details, please use this template [**repo**](https://github.com/imcotton/temp-cf-indirect-short) as scaffolding.
 
 
 
