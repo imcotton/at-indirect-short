@@ -100,7 +100,7 @@ npx jsr add @indirect/short@1
 import
 
 ```js
-import { make } from '@indirect/short/deploy/unstable-cloudflare'
+import { make } from '@indirect/short/deploy/cloudflare'
 ```
 
 > [!TIP]
