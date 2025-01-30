@@ -38,7 +38,7 @@
 <br><br><br><br><br>
 ## Examples
 
-### Deno Deploy
+### 🦕 Deno Deploy
 
 - no auth, one liner
 
@@ -89,7 +89,7 @@
     })
     ```
 
-### Cloudflare Workers
+### 🌩 Cloudflare Workers
 
 install
 
