@@ -11,9 +11,9 @@ export interface Mount {
 
 export const pico_css = {
 
-    version: '2.0.6',
+    version: '2.1.1',
 
-    integrity: 'sha256-3V/VWRr9ge4h3MEXrYXAFNw/HxncLXt9EB6grMKSdMI=',
+    integrity: 'sha256-+8mmP8n8n3LRL9f8mAbhH6n3euT5ytFGsnADoRGbo9s=',
 
     Accept: 'text/css',
 
