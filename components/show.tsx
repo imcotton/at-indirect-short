@@ -4,7 +4,7 @@ import { css } from 'hono/css';
 import { raw } from 'hono/html';
 import { jsx } from 'hono/jsx';
 
-import { qrcode } from 'qrcode';
+import { encodeQR } from 'qr';
 
 import { calc_integrity, map_quotes } from '../utils.ts';
 
@@ -20,7 +20,7 @@ export function Show ({ link, href, session }: {
 
 }) {
 
-    const svg = qrcode(href, { output: 'svg', border: 2 });
+    const svg = encodeQR(href, 'svg', { border: 2, optimize: true });
 
     const back = session ? `/?${ session }` : '/';
 
