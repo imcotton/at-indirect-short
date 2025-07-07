@@ -5,8 +5,8 @@ import { jsx } from 'hono/jsx';
 import { setCookie } from 'hono/cookie';
 import { csrf } from 'hono/csrf';
 import { bodyLimit } from 'hono/body-limit';
-import { validator } from 'hono/validator';
 import { HTTPException } from 'hono/http-exception';
+import { vValidator } from '@hono/valibot-validator';
 
 import type { Encoder } from './encoder/index.ts';
 import type { AdapterGen } from './adapter/index.ts';
@@ -17,7 +17,7 @@ import { Show, scriptSrc } from './components/show.tsx';
 import { collection } from './assets.ts';
 
 import { noop, csp, cached, register,
-    parser, v_create, v_code_slugify, v_optional_signing_back, read_var,
+    error_hook, v_create, v_code_slugify, v_optional_signing_back, read_var,
     UUIDv4, UUIDv5_URL, compose_signing_url, calc_fingerprint,
     nmap, nothing, slugify, exception, challenge_, duration,
 } from './utils.ts';
@@ -61,7 +61,7 @@ export async function create_app <E extends Env> (
                 formAction: signing_nav ? [ signing_site ] : [],
             }),
 
-            validator('query', parser(v_optional_signing_back)),
+            vValidator('query', v_optional_signing_back, error_hook),
 
             async function (ctx) {
 
@@ -103,7 +103,7 @@ export async function create_app <E extends Env> (
 
             auth,
 
-            validator('form', parser(v_create)),
+            vValidator('form', v_create, error_hook),
 
             async function (ctx) {
 
@@ -160,7 +160,7 @@ export async function create_app <E extends Env> (
 
             bodyLimit({ maxSize: 1024 }), // 1 kb max for slug
 
-            validator('form', parser(v_code_slugify)),
+            vValidator('form', v_code_slugify, error_hook),
 
             function (ctx) {
 
