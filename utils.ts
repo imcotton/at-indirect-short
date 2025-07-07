@@ -479,25 +479,19 @@ export function non_empty <const T> (x: T) {
 
 
 
-export function parser <
+export function error_hook <
 
     const T extends v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
 
-> (schema: T) {
+> ({ success, issues }: v.SafeParseResult<T>) {
 
-    return function (input: unknown) {
-
-        const { success, issues, output } = v.safeParse(schema, input);
-
-        if (success === true) {
-            return output;
-        }
+    if (success !== true) {
 
         const [ { message } ] = issues;
 
         throw new HTTPException(400, { message });
 
-    };
+    }
 
 }
 
