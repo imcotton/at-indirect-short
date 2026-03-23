@@ -9,7 +9,7 @@
     "@std/cache": "jsr:@std/cache@~0.2.2",
     "@std/crypto": "jsr:@std/crypto@1",
     "@std/encoding": "jsr:@std/encoding@1",
-    "@std/text": "jsr:@std/text@1",
+    "@std/text": "jsr:@std/text@^1.0.17",
     "@std/uuid": "jsr:@std/uuid@1",
     "fnv1a": "npm:@sindresorhus/fnv1a@3.1.0",
     "hono": "jsr:@hono/hono@^4.12.9",
