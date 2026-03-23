@@ -27,14 +27,9 @@ jobs:
       - name: Tests
         run: deno test --quiet --coverage --parallel ./specs
 
-      - name: Coverage
-        run: |-
-          deno coverage --exclude=./specs --lcov --output=cov.lcov
-          deno coverage --exclude=./specs
-
       - name: Codecov
         uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5.4.3
         with:
-          files: cov.lcov
+          files: coverage/lcov.info
           use_oidc: true
 
