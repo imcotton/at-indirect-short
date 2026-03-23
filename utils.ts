@@ -188,7 +188,7 @@ export function mins (n: number) {
 
 
 
-export function text_encode (str: string): Uint8Array {
+export function text_encode (str: string) {
 
     return txt.encode(str);
 
