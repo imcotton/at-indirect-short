@@ -1,5 +1,5 @@
 {
-  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
+  "$schema": "https://raw.esm.sh/gh/denoland/deno@v2.7.8/cli/schemas/config-file.v1.json",
   "name": "@indirect/short",
   "version": "1.4.4",
   "license": "AGPL-3.0-only",
