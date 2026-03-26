@@ -1,5 +1,4 @@
 import type { MiddlewareHandler } from 'hono/types';
-import { contextStorage } from 'hono/context-storage';
 
 import { create_app } from '../app.tsx';
 import { gen_cloudflare_kv } from '../adapter/cloudflare-kv.ts';
@@ -34,10 +33,7 @@ export function make ({
 
     const storage = gen_cloudflare_kv(kv_path ?? 'MY_KV');
 
-    const init = contextStorage();
-
     return create_app(hash, storage, {
-        init,
         auth,
         cache_name,
         ttl_in_ms,
