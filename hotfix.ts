@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+
 import type { Plugin } from 'jsr:@luca/esbuild-deno-loader@0.11.0/esbuild_types';
 
 
@@ -32,6 +34,20 @@ export const esbuild_plugin: Plugin = {
                 return build.resolve(fixed, { kind, resolveDir });
 
             }
+
+        });
+
+        build.onLoad({ filter: /\.[jt]sx$/ }, async ({ path }) => {
+
+            const contents = await readFile(path).then(buf => {
+
+                const index = buf.indexOf('/** @jsx jsx */');
+
+                return index > 0 ? buf.subarray(index) : buf;
+
+            });
+
+            return { loader: 'tsx', contents };
 
         });
 
