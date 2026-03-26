@@ -1,4 +1,4 @@
-import { getContext } from 'hono/context-storage';
+import { env } from 'cloudflare:workers';
 
 import * as v from 'valibot';
 
@@ -102,15 +102,11 @@ interface KVNamespace {
 
 function get_kv (ns: string): KVNamespace {
 
-    type Env = {
-        Bindings: Record<string, KVNamespace>,
-    };
-
-    const { [ns]: kv } = getContext<Env>().env;
+    const { [ns]: kv } = env;
 
     v.assert(safe_kv, kv);
 
-    return kv;
+    return kv as never;
 
 }
 
