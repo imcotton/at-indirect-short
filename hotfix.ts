@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import type { Plugin } from 'jsr:@luca/esbuild-deno-loader@0.11.0/esbuild_types';
+import type { Plugin } from 'jsr:@luca/esbuild-deno-loader@0.11.1/esbuild_types';
 
 
 
