@@ -409,7 +409,15 @@ export async function verify ({ timestamp, challenge, signature, pub }: {
         message: challenge,
     });
 
-    return EdDSA({ pub, sample, signature });
+    try {
+
+        return await EdDSA({ pub, sample, signature });
+
+    } catch {
+
+        return false;
+
+    }
 
 }
 
