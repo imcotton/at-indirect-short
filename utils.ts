@@ -80,6 +80,7 @@ export function cached (cacheName: string) {
 
     return cache({
         cacheName,
+        vary: 'Accept-Encoding',
         cacheControl: 'public, max-age=31536000, immutable',
         wait: typeof globalThis.Deno?.version?.deno === 'string',
     });
