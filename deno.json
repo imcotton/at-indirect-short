@@ -6,7 +6,7 @@
   "lock": false,
   "imports": {
     "@hono/valibot-validator": "jsr:@hono/valibot-validator@~0.6.1",
-    "@std/cache": "jsr:@std/cache@~0.2.2",
+    "@std/cache": "jsr:@std/cache@~0.2.3",
     "@std/crypto": "jsr:@std/crypto@1",
     "@std/encoding": "jsr:@std/encoding@1",
     "@std/text": "jsr:@std/text@^1.0.17",

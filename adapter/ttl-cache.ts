@@ -21,7 +21,7 @@ export const make_ttl_cache: AdapterGen = function () {
                 return resolve(false);
             }
 
-            cache.set(id, link, ttl?.milliseconds());
+            cache.set(id, link, { ttl: ttl?.milliseconds() });
 
             resolve(true);
 
